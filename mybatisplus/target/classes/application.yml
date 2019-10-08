@@ -1,0 +1,26 @@
+server:
+  port: 9081
+  context-path: /mybatisplus/
+
+mybatis:
+  #mybatis mapper文件的位置
+  mapper-location: classpath:com/zhupeng/dao/mapper/*.xml
+  #扫描pojo类的位置,在此处指明扫描实体类的包，在mapper中就可以不用写pojo类的全路径名了
+  type-aliases-package: com.zhupeng.entity.*
+  #可以通过mybatis.config-location属性来指定mybatis的配置文件的位置，
+  #mybatis.config-location=classpath:mybatis-config.xml
+
+
+spring:
+  #  jackson:
+  #    date-format: yyyy-MM-dd HH:mm:ss
+  #    time-zone: GMT+8
+  datasource:
+    name: test
+    url: jdbc:mysql://127.0.0.1:3306/test_db?useUnicode=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+

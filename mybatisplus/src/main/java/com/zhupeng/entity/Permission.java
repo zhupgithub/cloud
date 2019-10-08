@@ -2,6 +2,9 @@ package com.zhupeng.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 
 /**
@@ -17,11 +20,13 @@ public class Permission extends Model<Permission> {
 
     private static final long serialVersionUID = 1L;
 
+	@TableId(type = IdType.AUTO)
     private Integer pid;
 
     /**
      * 权限名称
      */
+	@TableField(value = "name")
     private String pname;
 
     public Integer getPid() {
