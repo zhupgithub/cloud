@@ -10,6 +10,8 @@ mybatis:
   #可以通过mybatis.config-location属性来指定mybatis的配置文件的位置，
   #mybatis.config-location=classpath:mybatis-config.xml
 
+# 这里有需要mybatisplus的配置
+
 
 spring:
   #  jackson:
