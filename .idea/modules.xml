@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/cloud.iml" filepath="$PROJECT_DIR$/cloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/es/es.iml" filepath="$PROJECT_DIR$/es/es.iml" />
       <module fileurl="file://$PROJECT_DIR$/mybatisplus/mybatisplus.iml" filepath="$PROJECT_DIR$/mybatisplus/mybatisplus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rabbitmq/rabbitmq.iml" filepath="$PROJECT_DIR$/rabbitmq/rabbitmq.iml" />
     </modules>
   </component>
 </project>

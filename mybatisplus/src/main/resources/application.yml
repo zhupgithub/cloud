@@ -1,12 +1,15 @@
 server:
   port: 9081
-  context-path: /mybatisplus/
+  servlet:
+    context-path: /mybatisplus/
 
-mybatis:
+mybatis-plus:
   #mybatis mapper文件的位置
   mapper-location: classpath:com/zhupeng/dao/mapper/*.xml
   #扫描pojo类的位置,在此处指明扫描实体类的包，在mapper中就可以不用写pojo类的全路径名了
   type-aliases-package: com.zhupeng.entity.*
+  # 配置slq打印日志
+  mybatis-plus.configuration.log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   #可以通过mybatis.config-location属性来指定mybatis的配置文件的位置，
   #mybatis.config-location=classpath:mybatis-config.xml
 

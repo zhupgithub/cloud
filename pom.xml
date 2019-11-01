@@ -5,6 +5,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>mybatisplus</module>
+        <module>es</module>
+        <module>rabbitmq</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -40,6 +42,12 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.54</version>
         </dependency>
 
         <dependency>
