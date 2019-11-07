@@ -150,7 +150,8 @@ public class RabbitMqSendCallbackTest {
         map.put("birthday" ,  new Date());
         map.put("age" ,  123);
         map.put("messageId" , correlationData.getId());
-        rabbitTemplate.convertAndSend(RabbitMqContant.USER_DIRECT_EXCHANGE , RabbitMqContant.TEST_ACK_ROUTINGKEY , map);
+        rabbitTemplate.convertAndSend(RabbitMqContant.USER_DIRECT_EXCHANGE ,
+                RabbitMqContant.TEST_ACK_ROUTINGKEY , map , new CorrelationData(22 + "ack============="));
 
         /**
          * ConfirmCallback相关数据correlationData ：null

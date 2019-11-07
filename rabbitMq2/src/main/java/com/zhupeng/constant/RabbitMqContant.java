@@ -1,9 +1,16 @@
-package com.zhupeng.contant;
+package com.zhupeng.constant;
 
 /**
  * rabbitMQ的常量
  */
 public class RabbitMqContant {
+    /**
+     * 常量
+     */
+    public static final String RANDLE_NUM_WORD = "#";
+    public static final String DLX_EXCHANGE = "dlx.exchange";
+    public static final String X_DEAD_LETTER_EXCHANGE  = "x-dead-letter-exchange";
+    public static final String X_DEAD_LETTER_ROUTING_KEY  = "x-dead-letter-routing-key";
 
     /**
      * exchange
@@ -17,6 +24,7 @@ public class RabbitMqContant {
     public static final String TEST_FANOUT_EXCHANGE = "test_fanout_exchange";
 
     public static final String TEST_DIRECT_EXCHANGE = "test_direct_exchange";
+
 
     /**
      * routingkey

@@ -7,17 +7,43 @@ import org.springframework.amqp.core.*;
 
 
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 @Slf4j
 public class RabbitMqConfig {
+
+    @Autowired
+    private ConnectionFactory connectionFactory;
+
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
+        return rabbitTemplate;
+    }
+//
+//    @Bean
+//    @Primary
+//    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory() {
+//        SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory = new SimpleRabbitListenerContainerFactory();
+//        simpleRabbitListenerContainerFactory.setConnectionFactory(connectionFactory);
+//        simpleRabbitListenerContainerFactory.setMessageConverter(new Jackson2JsonMessageConverter());
+//        return simpleRabbitListenerContainerFactory;
+//    }
+
+
     /**
     交换机、routingkey、queue的对应关系
     queue------:
@@ -94,6 +120,23 @@ public class RabbitMqConfig {
         return new TopicExchange(RabbitMqContant.USER_TOPIC_EXCHANGE);
     }
 
+
+    @Bean
+    public DirectExchange testDirectExchange(){
+        return new DirectExchange(RabbitMqContant.TEST_DIRECT_EXCHANGE);
+    }
+
+    @Bean
+    public Queue testDirectQueue(){
+        return new Queue(RabbitMqContant.TEST_DIRECT_QUEUE);
+    }
+
+    @Bean
+    public Binding testDirectBinding(){
+        return BindingBuilder.bind(testDirectQueue()).to(testDirectExchange()).with(RabbitMqContant.TEST_DIRECT_ROUTINGKEY);
+    }
+
+
     @Bean
     public Binding bindingUserQueue2UserTopicExchange(){
         return BindingBuilder.bind(userQueue()).to(userTopicExchange()).with(RabbitMqContant.USER_TOPIC_ROUTINGKEY);
@@ -127,10 +170,13 @@ public class RabbitMqConfig {
     }
 
 
-
+    /**
+     * 交换机的确认机制
+     * @return
+     */
     @Bean
-    public RabbitTemplate createRabbitTemplate(ConnectionFactory connectionFactory){
-        RabbitTemplate rabbitTemplate = new RabbitTemplate();
+    public RabbitTemplate createRabbitTemplate(){
+        RabbitTemplate rabbitTemplate = rabbitTemplate();
         rabbitTemplate.setConnectionFactory(connectionFactory);
         //设置开启Mandatory,才能触发回调函数,无论消息推送结果怎么样都强制调用回调函数
         rabbitTemplate.setMandatory(true);
@@ -144,7 +190,7 @@ public class RabbitMqConfig {
                 log.info("ConfirmCallback原因cause ：" + cause);
             }
         });
-
+        //当交换机找到了，但是没找到队列或者routingkey时
         rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
             @Override
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
