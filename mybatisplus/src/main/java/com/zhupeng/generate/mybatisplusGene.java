@@ -45,8 +45,8 @@ public class mybatisplusGene {
     private static final String password = "root";
 
     private static final String AUTHOR = "zhupeng";
-    private static final String TABLENAME = "user_role";
-    private static final String BEANNAME = "UserRole";
+    private static final String TABLENAME = "user";
+    private static final String BEANNAME = "User";
 
     public static void main(String[] args) {
         generate(AUTHOR,"com.zhupeng", "");

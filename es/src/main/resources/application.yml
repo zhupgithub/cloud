@@ -2,3 +2,9 @@ server:
   port: 9082
   servlet:
     context-path: /es/
+spring:
+  data:
+    #es相关配置
+    elasticsearch:
+      cluster-name: myCluster
+      cluster-nodes: 127.0.0.1:9300

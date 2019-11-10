@@ -1,0 +1,10 @@
+server:
+  port: 9085
+#  servlet:
+#    context-path: /admin/
+spring:
+  application:
+    name: adminserver
+#  boot:
+#    admin:
+#      context-path: /server

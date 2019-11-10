@@ -30,6 +30,15 @@
             <version>2.1.8.RELEASE</version>
         </dependency>
 
+
+
+        <!--  spring-boot-admin 客户端的jar -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -3,6 +3,27 @@ server:
 spring:
   application:
     name: mq
+  boot:
+    admin:
+      client:
+        instance:
+          prefer-ip: true
+        url: http://10.12.14.163:9085
+        service-base-url: http://10.12.14.163：9083
+#spring.boot.admin.client.instance.prefer-ip=true
+#spring.boot.admin.client.service-base-url=http://10.12.14.163:9083
+#management.endpoint.health.show-details=ALWAYS
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+
   rabbitmq:
     host: localhost
     username: guest

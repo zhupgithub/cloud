@@ -8,6 +8,7 @@
         <module>es</module>
         <module>rabbitmq</module>
         <module>rabbitMq2</module>
+        <module>adminServer</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
