@@ -1,7 +1,10 @@
 package com.zhupeng.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhupeng.config.ApplicationSender;
 import com.zhupeng.contant.RabbitMqContant;
+import com.zhupeng.entity.Address;
+import com.zhupeng.entity.ApplicationMessage;
 import com.zhupeng.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -159,5 +163,17 @@ public class RabbitMqSendCallbackTest {
          * ConfirmCallback原因cause ：null
          */
         return "sucess";
+    }
+
+    @RequestMapping("sender")
+    public String sender(){
+        Address address = new Address("source" , "123号" , "zhupeng");
+
+        address.setMessageType(ApplicationMessage.messageType.TEST);
+
+        ApplicationSender.send(address);
+
+        return "success";
+
     }
 }

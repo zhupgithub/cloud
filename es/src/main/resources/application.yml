@@ -3,8 +3,28 @@ server:
   servlet:
     context-path: /es/
 spring:
+  elasticsearch:
+    rest:
+      uris: "http://10.12.14.163:9200"
+  boot:
+    admin:
+      client:
+        instance:
+          prefer-ip: true
+        url: http://10.12.14.163:9085
+        service-base-url: http://10.12.14.163:9082
   data:
     #es相关配置
     elasticsearch:
       cluster-name: myCluster
       cluster-nodes: 127.0.0.1:9300
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

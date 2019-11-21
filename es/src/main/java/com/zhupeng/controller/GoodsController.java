@@ -5,12 +5,18 @@ import com.zhupeng.entity.Goods;
 import com.zhupeng.service.GoodsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.metrics.avg.InternalAvg;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.query.FetchSourceFilter;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -390,11 +396,86 @@ public class GoodsController {
 
         log.info("fuzzyQuery== 总条数" + fuzzyQueryGoodsPage.getTotalElements() +"总页数：" + fuzzyQueryGoodsPage.getTotalPages() + JSONObject.toJSONString(fuzzyQueryGoodsPage));
 
-
-
-
         return "success";
     }
 
+
+    @RequestMapping("aggregated")
+    public String aggregated(){
+
+        NativeSearchQueryBuilder termAggregated = new NativeSearchQueryBuilder();
+
+        //不查询任何结果
+        termAggregated.withSourceFilter(new FetchSourceFilter(new String[]{""}, null));
+
+        //1、添加一个新的聚合，聚合类型为terms，聚合名称为brands，聚合字段为brand
+        termAggregated.addAggregation(
+                AggregationBuilders.terms("brands").field("brand")
+        );
+
+        // 2、查询,需要把结果强转为AggregatedPage类型
+        AggregatedPage<Goods> atermAggregatedPage = (AggregatedPage<Goods>)goodsRepository.search(termAggregated.build());
+
+
+        // 3、解析
+        // 3.1、从结果中取出名为brands的那个聚合，
+        // 因为是利用String类型字段来进行的term聚合，所以结果要强转为StringTerm类型
+        StringTerms stringTerms = (StringTerms)atermAggregatedPage.getAggregation("brands");
+
+        // 3.2、获取桶
+        List<StringTerms.Bucket> stringTermsBucket = stringTerms.getBuckets();
+
+        //遍历桶
+        for(StringTerms.Bucket bucket : stringTermsBucket){
+
+            // 3.4、获取桶中的key，即品牌名称
+            String key = bucket.getKeyAsString();
+
+            // 3.5、获取桶中的文档数量
+            long docCount = bucket.getDocCount();
+
+            log.info("桶中的key:{} , 桶中的文档数量:{}" , key , docCount);
+        }
+
+
+
+
+        NativeSearchQueryBuilder aggregated = new NativeSearchQueryBuilder();
+
+        //不查询任何结果
+        aggregated.withSourceFilter(new FetchSourceFilter(new String[]{""}, null));
+
+        //1、添加一个新的聚合，聚合类型为terms，聚合名称为brands，聚合字段为brand
+        aggregated.addAggregation(
+                AggregationBuilders.terms("brands").field("brand")
+                .subAggregation(AggregationBuilders.avg("priceAvg").field("price"))  // 在品牌聚合桶内进行嵌套聚合，求平均值
+        );
+
+        // 2、查询,需要把结果强转为AggregatedPage类型
+        AggregatedPage<Goods> aggregatedPage = (AggregatedPage<Goods>)goodsRepository.search(aggregated.build());
+
+        // 3、解析
+        // 3.1、从结果中取出名为brands的那个聚合，
+        // 因为是利用String类型字段来进行的term聚合，所以结果要强转为StringTerm类型
+        StringTerms aggregationStringTerms = (StringTerms)aggregatedPage.getAggregation("brands");
+
+        // 3.2、获取桶
+        List<StringTerms.Bucket> aggregationStringTermsBucket = aggregationStringTerms.getBuckets();
+
+        //遍历桶
+        for(StringTerms.Bucket bucket : aggregationStringTermsBucket){
+
+            // 3.4、获取桶中的key，即品牌名称  3.5、获取桶中的文档数量
+            log.info(bucket.getKeyAsString() + "，共" + bucket.getDocCount() + "台");
+
+            InternalAvg internalAvg = (InternalAvg)bucket.getAggregations().asMap().get("priceAvg");
+
+            log.info("平均价格：" + internalAvg.getValue());
+
+
+        }
+
+        return "success";
+    }
 
 }

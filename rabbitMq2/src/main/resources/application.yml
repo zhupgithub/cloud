@@ -3,13 +3,18 @@ server:
 spring:
   application:
     name: mq2
-#springboot-
+
+
+#springboot-admin
   boot:
     admin:
       client:
+        url: http://localhost:9085/monitor
+        username: root
+        password: root
         instance:
-          prefer-ip: true
-        url: http://localhost:9085 #服务端的地址
+          service-base-url: http://localhost:9084
+          name: mq2
 management:
   endpoints:
     web:
@@ -19,14 +24,20 @@ management:
     health:
       show-details: ALWAYS
 #management.endpoints.web.exposure.include=*
+
+
+
   redis:
     database: 0
     host: localhost
     port: 6379
     password:
+
+
+
   rabbitmq:
-    host: localhost
-    username: guest
+    host: 10.12.14.155
+    port: 5672
     password: guest
     #虚拟host 可以不设置,使用server默认host
 #    virtual-host: JCcccHost
