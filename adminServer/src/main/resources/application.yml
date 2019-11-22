@@ -1,8 +1,8 @@
+spring:
+  application:
+    name: adminServer
 server:
   port: 9085
 
-spring:
-  boot:
-    admin:
-      context-path: monitor
+
 

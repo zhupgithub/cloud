@@ -14,7 +14,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     @Bean
     public UserDetailsService userDetailsService() throws Exception {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withDefaultPasswordEncoder().username("root").password("root").roles("administrator").build());
+        manager.createUser(User.withDefaultPasswordEncoder().username("zhupeng").password("zhupeng123").roles("administrator").build());
         return manager;
     }
 }
