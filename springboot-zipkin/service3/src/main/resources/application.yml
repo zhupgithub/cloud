@@ -1,0 +1,6 @@
+server:
+  port: 9087
+spring:
+  application:
+    name: service3
+

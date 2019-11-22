@@ -1,0 +1,6 @@
+server:
+  port: 9086
+spring:
+  application:
+    name: service2
+
